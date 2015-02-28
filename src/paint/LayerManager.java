@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -67,7 +68,8 @@ public class LayerManager extends JPanel{
 		panel_1.add(btnMoveDown);
 		actionListenersSetup();
 		layers = new ArrayList<Layer>();
-		
+		addLayer(new Layer(this, "Default Layer"));
+		layers.get(0).setSelected(true);
 	}
 	
 	private void actionListenersSetup(){
@@ -75,14 +77,17 @@ public class LayerManager extends JPanel{
 		btnNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addLayer(new Layer(me, "Layer " + layerCount));
+				//Place new layer above currently selected layer
+				addLayer(new Layer(me, "Layer " + layerCount), getCurrentLayerNum());
 			}
 		});
 		
 		btnRename.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				String name = JOptionPane.showInputDialog("Enter a new name for the layer: ");
+				if (name != null)
+					getCurrentLayer().changeName(name);
 			}
 		});
 		
@@ -117,6 +122,10 @@ public class LayerManager extends JPanel{
 		
 		return null;
 	}
+	
+	public int getCurrentLayerNum(){
+		return layers.indexOf(getCurrentLayer());
+	}
 
 	public List<Layer> getLayerList(){
 		return layers;
@@ -132,6 +141,7 @@ public class LayerManager extends JPanel{
 		layers.add(spot, layer);
 		updateLayerPositions();
 		layerCount++;
+		revalidate();
 	}
 
 	private void updateLayerPositions() {

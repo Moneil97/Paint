@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
@@ -34,6 +35,7 @@ public class Layer extends JPanel implements MouseListener{
 	private LayerManager adult;
 	private Border selectedBoder, defaultBorder;
 	private Image blankThumbnail;
+	private JLabel nameLabel;
 	
 	public Layer(LayerManager parent, String name){
 		//this.me = this;
@@ -68,7 +70,7 @@ public class Layer extends JPanel implements MouseListener{
 		JPanel namePanel = new JPanel();
 		namePanel.setBorder(new EmptyBorder(0, 6, 0, 0));
 		namePanel.setLayout(new GridLayout(0, 1, 0, 0));
-		JLabel nameLabel = new JLabel(name);
+		nameLabel = new JLabel(this.name);
 		namePanel.add(nameLabel);
 		add(namePanel, BorderLayout.CENTER);
 		
@@ -87,6 +89,11 @@ public class Layer extends JPanel implements MouseListener{
 		
 		addMouseListener(this);
 		
+	}
+	
+	public void changeName(String name) {
+		this.name = name;
+		nameLabel.setText(this.name);
 	}
 	
 	public void setSelected(boolean selected){
@@ -122,5 +129,7 @@ public class Layer extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
+
+	
 
 }

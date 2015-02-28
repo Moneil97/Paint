@@ -20,7 +20,7 @@ public class Paint extends JFrame{
       
             	setupFrame();
         		addListeners();
-        		bottomPanel.addLayerToManager("Default Layer");
+        		
         		
             }
     	});
