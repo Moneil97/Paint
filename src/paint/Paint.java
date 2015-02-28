@@ -10,6 +10,9 @@ import java.awt.EventQueue;
 @SuppressWarnings("serial")
 public class Paint extends JFrame{
 
+	private BottomPanel bottomPanel;
+
+
 	public Paint() {
 		EventQueue.invokeLater(new Runnable() {
             @Override
@@ -17,23 +20,18 @@ public class Paint extends JFrame{
       
             	setupFrame();
         		addListeners();
-//        		printSize();
+        		bottomPanel.addLayerToManager("Default Layer");
         		
-
             }
     	});
 	}
-
-	
-
-	
 
 
 
 	private void setupFrame() {
 		JPanel centerPanel = new CenterPanel();
 		JPanel topPanel = new TopPanel();
-		JPanel bottomPanel = new BottomPanel();
+		bottomPanel = new BottomPanel();
 		JPanel leftPanel = new LeftPanel();
 		JPanel rightPanel = new RightPanel();
 		
@@ -44,7 +42,7 @@ public class Paint extends JFrame{
 		getContentPane().add(rightPanel, BorderLayout.EAST);
 		
 		this.setTitle("Paint.Java (Cameron O'Neil)");
-		this.setSize(400, 400);
+		this.setSize(800, 700);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

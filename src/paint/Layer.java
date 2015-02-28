@@ -22,9 +22,9 @@ public class Layer {
 		layerLabel = new LayerLabel(this, name);
 	}
 
-	public JPanel getLayerLabelAsPanel() {
-		return layerLabel;
-	}
+//	public JPanel getLayerLabelAsPanel() {
+//		return layerLabel;
+//	}
 	
 	public LayerLabel getLayerLabel() {
 		return layerLabel;
