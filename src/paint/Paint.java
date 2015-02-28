@@ -2,19 +2,33 @@ package paint;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import java.awt.BorderLayout;
+import javax.swing.UIManager;
 
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+@SuppressWarnings("serial")
 public class Paint extends JFrame{
 
 	public Paint() {
-		
-		setupFrame();
-		addListeners();
-		
+		EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+      
+            	setupFrame();
+        		addListeners();
+//        		printSize();
+        		
+
+            }
+    	});
 	}
 
 	
+
+	
+
+
 
 	private void setupFrame() {
 		JPanel centerPanel = new CenterPanel();
@@ -29,18 +43,43 @@ public class Paint extends JFrame{
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		getContentPane().add(rightPanel, BorderLayout.EAST);
 		
+		this.setTitle("Paint.Java (Cameron O'Neil)");
 		this.setSize(400, 400);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		
 	}
 	
 	private void addListeners() {
 		
 	}
+	
+	
+//	private void printSize() {
+//		new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				while (true){
+//					System.out.println(centerPanel.getSize());
+//				}
+//			}
+//		}).start();
+//	}
 
 	public static void main(String[] args) {
-		new Paint();
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}catch(Exception e){};
+		
+		EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+            	new Paint();
+            }
+    	});
 	}
 
 }
