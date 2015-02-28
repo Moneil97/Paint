@@ -1,35 +1,126 @@
 package paint;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
-
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Layer {
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
 
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.BoxLayout;
+
+@SuppressWarnings("serial")
+public class Layer extends JPanel implements MouseListener{
+	
+	private Image thumbnail, snapshot;
+	private int thumbSize = 50;
 	private String name;
-	private BufferedImage snapshot;
-	private LayerLabel layerLabel;
+	//private int ratio = 1;
+	//private Layer me;
+	private boolean selected = false;
 	private LayerManager adult;
-
-	public Layer(LayerManager parent, String name) {
+	private Border selectedBoder, defaultBorder;
+	private Image blankThumbnail;
+	
+	public Layer(LayerManager parent, String name){
+		//this.me = this;
 		this.adult = parent;
 		this.name = name;
-		layerLabel = new LayerLabel(this, name);
+		setLayout(new BorderLayout(0, 0));
+		
+		defaultBorder= BorderFactory.createLineBorder(Color.gray);
+		selectedBoder = BorderFactory.createLineBorder(Color.blue);
+		this.setBorder(defaultBorder);
+		blankThumbnail = new BufferedImage(thumbSize, thumbSize, BufferedImage.TYPE_INT_RGB);
+		blankThumbnail.getGraphics().setColor(Color.WHITE);
+		blankThumbnail.getGraphics().fillRect(0, 0, thumbSize, thumbSize);
+		thumbnail = blankThumbnail;
+		
+		JPanel thumbnailPanel = new JPanel(){
+			
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				
+				g.drawImage(thumbnail, 2, 2, null);
+				g.setColor(Color.gray);
+				g.drawRect(2, 2, thumbSize, thumbSize);
+			}
+			
+		};
+		
+		thumbnailPanel.setPreferredSize(new Dimension(thumbSize+4, thumbSize+4));
+		add(thumbnailPanel, BorderLayout.WEST);
+		
+		JPanel namePanel = new JPanel();
+		namePanel.setBorder(new EmptyBorder(0, 6, 0, 0));
+		namePanel.setLayout(new GridLayout(0, 1, 0, 0));
+		JLabel nameLabel = new JLabel(name);
+		namePanel.add(nameLabel);
+		add(namePanel, BorderLayout.CENTER);
+		
+		JPanel isVisiblePanelOuter = new JPanel();
+		add(isVisiblePanelOuter, BorderLayout.EAST);
+		isVisiblePanelOuter.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel isVisiblePanelInner = new JPanel();
+		isVisiblePanelOuter.add(isVisiblePanelInner);
+		isVisiblePanelInner.setLayout(new BoxLayout(isVisiblePanelInner, BoxLayout.X_AXIS));
+		
+		JCheckBox isVisibleCheckBox = new JCheckBox("Visible");
+		isVisibleCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+		isVisiblePanelInner.add(isVisibleCheckBox);
+		isVisibleCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		addMouseListener(this);
+		
 	}
 	
-	public boolean isSelected(){
-		return layerLabel.isSelected();
+	public void setSelected(boolean selected){
+		this.selected  = selected;
+		
+		if (selected)
+			this.setBorder(selectedBoder);
+		else
+			this.setBorder(defaultBorder);
 	}
 	
-	public LayerLabel getLayerLabel() {
-		return layerLabel;
+	public boolean isSelected() {
+		return selected;
 	}
 
-	public List<Layer> getLayerList() {
-		return adult.getLayerList();
+	@Override
+	public void mouseClicked(MouseEvent arg0) {}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		System.out.println("You've selected: " + name + " Label");
+		
+		for (Layer l : adult.getLayerList())
+			l.setSelected(false);
+		setSelected(true);
 	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
 
 }
-
-

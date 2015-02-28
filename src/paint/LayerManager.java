@@ -82,8 +82,7 @@ public class LayerManager extends JPanel{
 		btnRename.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(ComponetFinder.getComponentNames(ComponetFinder.getAllComponents(me)));
-//				ComponetFinder.findCompWithName(ComponetFinder.getAllComponents(me), "");
+				
 			}
 		});
 		
@@ -138,7 +137,7 @@ public class LayerManager extends JPanel{
 	private void updateLayerPositions() {
 		layerPanel.removeAll();
 		for (Layer l : layers)
-			layerPanel.add(l.getLayerLabel());
+			layerPanel.add(l);
 	}
 	
 }
