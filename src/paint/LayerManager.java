@@ -29,6 +29,7 @@ public class LayerManager extends JPanel{
 	private LayerManager me;
 	
 	public LayerManager(){
+		this.setName("LayerManager");
 		this.me = this;
 		setLayout(new BorderLayout(0, 0));
 		
@@ -66,6 +67,7 @@ public class LayerManager extends JPanel{
 		panel_1.add(btnMoveDown);
 		actionListenersSetup();
 		layers = new ArrayList<Layer>();
+		
 	}
 	
 	private void actionListenersSetup(){
@@ -80,7 +82,8 @@ public class LayerManager extends JPanel{
 		btnRename.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				System.out.println(ComponetFinder.getComponentNames(ComponetFinder.getAllComponents(me)));
+//				ComponetFinder.findCompWithName(ComponetFinder.getAllComponents(me), "");
 			}
 		});
 		
@@ -107,9 +110,14 @@ public class LayerManager extends JPanel{
 		
 	}
 	
-//	public Layer getSelectedLayer(){
-//		
-//	}
+	public Layer getCurrentLayer(){
+		
+		for (Layer l : layers)
+			if (l.isSelected())
+				return l;
+		
+		return null;
+	}
 
 	public List<Layer> getLayerList(){
 		return layers;

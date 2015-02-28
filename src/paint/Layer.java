@@ -12,19 +12,15 @@ public class Layer {
 	private LayerLabel layerLabel;
 	private LayerManager adult;
 
-//	public Layer() {
-//		
-//	}
-
 	public Layer(LayerManager parent, String name) {
 		this.adult = parent;
 		this.name = name;
 		layerLabel = new LayerLabel(this, name);
 	}
-
-//	public JPanel getLayerLabelAsPanel() {
-//		return layerLabel;
-//	}
+	
+	public boolean isSelected(){
+		return layerLabel.isSelected();
+	}
 	
 	public LayerLabel getLayerLabel() {
 		return layerLabel;

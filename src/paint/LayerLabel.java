@@ -34,6 +34,7 @@ public class LayerLabel extends JPanel implements MouseListener{
 	//private int ratio = 1;
 	private LayerLabel me;
 	private Layer adult;
+	private boolean selected = false;
 	
 	public LayerLabel(Layer parent, String name){
 		this.me = this;
@@ -98,12 +99,15 @@ public class LayerLabel extends JPanel implements MouseListener{
 	public void mousePressed(MouseEvent arg0) {
 		System.out.println("You've selected: " + name + " Label");
 		
+		//System.out.println(ComponetFinder.getComponentNames(ComponetFinder.getAllComponents(me)));
+		
 		for (Layer l : adult.getLayerList())
 			l.getLayerLabel().setSelected(false);
 		setSelected(true);
 	}
 
 	public void setSelected(boolean selected){
+		this.selected  = selected;
 		if (selected)
 			me.setBorder(BorderFactory.createLineBorder(Color.blue));
 		else
@@ -112,6 +116,10 @@ public class LayerLabel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
+
+	public boolean isSelected() {
+		return selected;
+	}
 	
 //	public static void main(String args[]){
 //		JFrame frame = new JFrame();
