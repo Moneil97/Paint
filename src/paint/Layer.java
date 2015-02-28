@@ -26,7 +26,7 @@ import javax.swing.BoxLayout;
 @SuppressWarnings("serial")
 public class Layer extends JPanel implements MouseListener{
 	
-	private Image thumbnail, snapshot;
+	private Image thumbnail/*, snapshot*/;
 	private int thumbSize = 50;
 	private String name;
 	//private int ratio = 1;

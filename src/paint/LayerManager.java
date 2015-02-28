@@ -19,7 +19,7 @@ import javax.swing.JButton;
 @SuppressWarnings("serial")
 public class LayerManager extends JPanel{
 
-	List<Layer> layers;
+	private List<Layer> layers;
 	private JPanel layerPanel;
 	private JButton btnNew;
 	private JButton btnRename;
@@ -94,28 +94,43 @@ public class LayerManager extends JPanel{
 		btnDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				int currentSpot = getCurrentLayerNum();
+				deleteLayer(getCurrentLayer());
+				layers.get((currentSpot > 0 ? currentSpot-1 : 0)).setSelected(true);
 			}
 		});
 		
 		btnMoveUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				moveUp(getCurrentLayer());
 			}
 		});
 		
 		btnMoveDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				moveDown(getCurrentLayer());
 			}
 		});
 		
 	}
 	
+	protected void moveDown(Layer currentLayer) {
+		int newSpot = layers.indexOf(currentLayer) + 1;
+		layers.remove(currentLayer);
+		layers.add(newSpot, currentLayer);
+		updateLayerPositions();
+	}
+
+	protected void moveUp(Layer currentLayer) {
+		int newSpot = layers.indexOf(currentLayer) - 1;
+		layers.remove(currentLayer);
+		layers.add(newSpot, currentLayer);
+		updateLayerPositions();
+	}
+
 	public Layer getCurrentLayer(){
-		
 		for (Layer l : layers)
 			if (l.isSelected())
 				return l;
@@ -143,11 +158,23 @@ public class LayerManager extends JPanel{
 		layerCount++;
 		revalidate();
 	}
+	
+	public void deleteLayer(Layer layer){
+		if (layers.size() > 1){
+			layers.remove(layer);
+			updateLayerPositions();
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "You must have at least one layer at all times.");
+		}
+	}
 
 	private void updateLayerPositions() {
 		layerPanel.removeAll();
 		for (Layer l : layers)
 			layerPanel.add(l);
+		
+		revalidate();
 	}
 	
 }
