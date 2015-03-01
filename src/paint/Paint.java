@@ -11,6 +11,7 @@ import java.awt.EventQueue;
 public class Paint extends JFrame{
 
 	private BottomPanel bottomPanel;
+	private TopMenuBar menuBar;
 
 
 	public Paint() {
@@ -30,13 +31,14 @@ public class Paint extends JFrame{
 
 	private void setupFrame() {
 		JPanel centerPanel = new CenterPanel();
-		JPanel topPanel = new TopPanel();
+		menuBar = new TopMenuBar();
 		bottomPanel = new BottomPanel();
 		JPanel leftPanel = new LeftPanel();
 		JPanel rightPanel = new RightPanel();
 		
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
-		getContentPane().add(topPanel, BorderLayout.NORTH);
+		//getContentPane().add(topPanel, BorderLayout.NORTH);
+		setJMenuBar(menuBar);
 		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		getContentPane().add(rightPanel, BorderLayout.EAST);

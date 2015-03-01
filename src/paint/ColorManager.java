@@ -3,6 +3,7 @@ package paint;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -43,6 +43,10 @@ public class ColorManager extends JPanel{
 				g.fillRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
 				g.setColor(Color.black);
 				g.drawRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
+				g.setColor(new Color(255-redSlider.getValue(), 255-greenSlider.getValue(), 255-blueSlider.getValue()));
+				g.setFont(new Font("Arial", Font.PLAIN, 16 ));
+				String s = redSlider.getValue() + ", " +  greenSlider.getValue() + ", " + blueSlider.getValue();
+				g.drawString(s, getWidth() - g.getFontMetrics().stringWidth(s) - 10, 40);
 			}
 			
 		};
