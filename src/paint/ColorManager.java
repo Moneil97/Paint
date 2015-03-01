@@ -5,7 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -35,18 +38,38 @@ public class ColorManager extends JPanel{
 		JPanel selectedColorPanel = new JPanel(){
 			
 			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
+			protected void paintComponent(Graphics g1) {
+				super.paintComponent(g1);
+				Graphics2D g = (Graphics2D) g1;
+				
+//				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//						RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//				g.setRenderingHint(RenderingHints.KEY_RENDERING,
+//						RenderingHints.VALUE_RENDER_QUALITY);
 				
 				g.setColor(new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
 				int padding = 5;
 				g.fillRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
 				g.setColor(Color.black);
 				g.drawRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
+				g.setFont(new Font("Arial", Font.PLAIN, 16));
 				g.setColor(new Color(255-redSlider.getValue(), 255-greenSlider.getValue(), 255-blueSlider.getValue()));
-				g.setFont(new Font("Arial", Font.PLAIN, 16 ));
 				String s = redSlider.getValue() + ", " +  greenSlider.getValue() + ", " + blueSlider.getValue();
 				g.drawString(s, getWidth() - g.getFontMetrics().stringWidth(s) - 10, 40);
+				
+				//drawOutline(g,s);
+			}
+
+			@SuppressWarnings("unused")
+			private void drawOutline(Graphics2D g, String s) {
+				g.setColor(Color.black);
+				g.translate(getWidth() - g.getFontMetrics().stringWidth(s) - 10, 40);
+				g.draw(getTextOutline(g, s));
+			}
+
+			private Shape getTextOutline(Graphics2D g, String string) {
+				return g.getFont().createGlyphVector(g.getFontRenderContext(), string).getOutline();
 			}
 			
 		};
@@ -115,7 +138,7 @@ public class ColorManager extends JPanel{
 			protected void paintComponent(Graphics g) {
 				
 				g.setColor(color);
-				g.fillRect(0, 0, (int) (this.getWidth() * ((double) this.getValue()/this.getMaximum())), this.getHeight());
+				g.fillRect(0, 0, (int) (this.getWidth() * ((double) this.getValue()/(this.getMaximum()))), this.getHeight());
 				super.paintComponent(g);
 				
 			}

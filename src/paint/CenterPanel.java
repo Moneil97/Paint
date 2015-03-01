@@ -8,9 +8,6 @@ public class CenterPanel extends JPanel {
 
 	public CenterPanel() {
 		
-		JButton btnNewButton = new JButton("New button");
-		add(btnNewButton);
-		
 	}
 	
 //	public Dimension getSize(){
