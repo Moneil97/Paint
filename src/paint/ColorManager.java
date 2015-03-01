@@ -53,9 +53,9 @@ public class ColorManager extends JPanel{
 		JPanel slidersPanel = new JPanel();
 		slidersPanel.setLayout(new GridLayout(0,1));
 		
-		redSlider = createColorSlider(Color.red);
-		greenSlider = createColorSlider(Color.green);
-		blueSlider = createColorSlider(Color.blue);
+		redSlider = createColorSlider(Color.red, 60);
+		greenSlider = createColorSlider(Color.green, 120);
+		blueSlider = createColorSlider(Color.blue, 180);
 		
 		slidersPanel.add(redSlider);
 		slidersPanel.add(greenSlider);
@@ -104,7 +104,7 @@ public class ColorManager extends JPanel{
 		add(centerPanel);
 	}
 	
-	private JSlider createColorSlider(Color color){
+	private JSlider createColorSlider(Color color, int value){
 		JSlider colorSlider = new JSlider(){
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -119,7 +119,7 @@ public class ColorManager extends JPanel{
 		colorSlider.setOpaque(false);
 		colorSlider.setMinimum(0);
 		colorSlider.setMaximum(255);
-		colorSlider.setValue(0);
+		colorSlider.setValue(value);
 		colorSlider.setBorder(BorderFactory.createLineBorder(Color.gray));
 		
 		colorSlider.addChangeListener(new ChangeListener() {
