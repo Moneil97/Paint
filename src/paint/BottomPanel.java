@@ -1,5 +1,8 @@
 package paint;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -9,8 +12,12 @@ public class BottomPanel extends JPanel {
 
 	public BottomPanel() {
 		
+		this.setLayout(new GridLayout(1,2));
+		
 		layersManager = new LayerManager();
+		this.add(new ColorManager());
 		this.add(layersManager);
+		
 		
 		
 		
