@@ -42,7 +42,7 @@ public class Paint extends JFrame{
 		getContentPane().add(rightPanel, BorderLayout.EAST);
 		
 		this.setTitle("Paint.Java (Cameron O'Neil)");
-		this.setSize(800, 700);
+		this.setSize(900, 700);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

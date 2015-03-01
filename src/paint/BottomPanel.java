@@ -1,23 +1,18 @@
 package paint;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 @SuppressWarnings("serial")
-public class BottomPanel extends JPanel {
+public class BottomPanel extends JSplitPane {
 
 	private LayerManager layersManager;
 
 	public BottomPanel() {
-		
-		this.setLayout(new GridLayout(1,2));
-		
 		layersManager = new LayerManager();
-		this.add(new ColorManager());
-		this.add(layersManager);
-		
+		this.setLeftComponent(new ColorManager());
+		this.setRightComponent(layersManager);
+		this.setDividerLocation(900/2 - 5);
+		this.setResizeWeight(.5);
 	}
 	
 	public LayerManager getLayerManager(){

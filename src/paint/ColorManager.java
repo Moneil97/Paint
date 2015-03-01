@@ -82,13 +82,14 @@ public class ColorManager extends JPanel{
 		moreAndLabel.add(new JLabel("   Recent:"));
 		
 		JPanel recent = new JPanel();
-		final int recentRows = 2, recentColumns = 12;
+		final int recentRows = 2, recentColumns = 14;
 		recent.setLayout(new GridLayout(recentRows, recentColumns));
 		
 		List <ColorTile> tiles = new ArrayList<ColorTile>();
 		
 		for (int i=0; i< recentRows * recentColumns; i++){
-			recent.add(new ColorTile());
+			tiles.add(new ColorTile());
+			recent.add(tiles.get(i));
 		}
 		
 		
