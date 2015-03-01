@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JLabel;
@@ -43,7 +44,7 @@ public class LayerManager extends JPanel{
 //		scrollPane.setColumnHeaderView(header);
 		
 		layerPanel = new JPanel();
-		layerPanel.setLayout(new GridLayout(0, 1));
+		layerPanel.setLayout(new BoxLayout(layerPanel, BoxLayout.Y_AXIS));
 		scrollPane.setViewportView(layerPanel);
 		
 		JLabel lblTest = new JLabel("Test");
@@ -175,6 +176,7 @@ public class LayerManager extends JPanel{
 			layerPanel.add(l);
 		
 		revalidate();
+		repaint();
 	}
 	
 }
