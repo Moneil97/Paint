@@ -42,6 +42,8 @@ public class Layer extends JPanel implements MouseListener{
 		this.adult = parent;
 		this.name = name;
 		setLayout(new BorderLayout(0, 0));
+		//setMaximumSize(new Dimension(10, 10));
+		
 		
 		defaultBorder= BorderFactory.createLineBorder(Color.gray);
 		selectedBoder = BorderFactory.createLineBorder(Color.blue);

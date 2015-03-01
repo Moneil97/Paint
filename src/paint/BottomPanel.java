@@ -18,9 +18,6 @@ public class BottomPanel extends JPanel {
 		this.add(new ColorManager());
 		this.add(layersManager);
 		
-		
-		
-		
 	}
 	
 	public LayerManager getLayerManager(){

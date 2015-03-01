@@ -5,9 +5,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -23,8 +31,6 @@ public class ColorManager extends JPanel{
 		
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
-		
-		
 		
 		JPanel selectedColorPanel = new JPanel(){
 			
@@ -56,9 +62,43 @@ public class ColorManager extends JPanel{
 		slidersPanel.add(blueSlider);
 		
 		
+		JPanel recentAndMorePanel = new JPanel();
+		recentAndMorePanel.setLayout(new BorderLayout());
+		
+		JPanel moreAndLabel = new JPanel();
+		moreAndLabel.setLayout(new GridLayout(2,1));
+		
+		JButton moreButton = new JButton("More");
+		
+		moreButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				Color color = JColorChooser.showDialog(null, "Choose Color", Color.green);
+			}
+		});
+		
+		moreAndLabel.add(moreButton);
+		moreAndLabel.add(new JLabel("   Recent:"));
+		
+		JPanel recent = new JPanel();
+		final int recentRows = 2, recentColumns = 12;
+		recent.setLayout(new GridLayout(recentRows, recentColumns));
+		
+		List <ColorTile> tiles = new ArrayList<ColorTile>();
+		
+		for (int i=0; i< recentRows * recentColumns; i++){
+			recent.add(new ColorTile());
+		}
+		
+		
+		recentAndMorePanel.add(moreAndLabel, "West");
+		//recentAndMorePanel.add(recentScroller, "Center");
+		recentAndMorePanel.add(recent, "Center");
 		
 		centerPanel.add(selectedColorPanel, "North");
 		centerPanel.add(slidersPanel);
+		centerPanel.add(recentAndMorePanel, "South");
 		
 		setLayout(new GridLayout(1,1));
 		add(centerPanel);
