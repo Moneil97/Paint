@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +28,8 @@ public class ColorManager extends JPanel{
 	private JSlider redSlider;
 	private JSlider greenSlider;
 	private JSlider blueSlider;
+	final private Color defaultColor = new Color(60,120,180);
+	private Color color = defaultColor;
 
 	public ColorManager() {
 		
@@ -48,13 +49,13 @@ public class ColorManager extends JPanel{
 //				g.setRenderingHint(RenderingHints.KEY_RENDERING,
 //						RenderingHints.VALUE_RENDER_QUALITY);
 				
-				g.setColor(new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
+				g.setColor(color);
 				int padding = 5;
 				g.fillRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
 				g.setColor(Color.black);
 				g.drawRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
 				g.setFont(new Font("Arial", Font.PLAIN, 16));
-				g.setColor(new Color(255-redSlider.getValue(), 255-greenSlider.getValue(), 255-blueSlider.getValue()));
+				g.setColor(getInverted(color));
 				String s = redSlider.getValue() + ", " +  greenSlider.getValue() + ", " + blueSlider.getValue();
 				g.drawString(s, getWidth() - g.getFontMetrics().stringWidth(s) - 10, 40);
 				
@@ -80,9 +81,9 @@ public class ColorManager extends JPanel{
 		JPanel slidersPanel = new JPanel();
 		slidersPanel.setLayout(new GridLayout(0,1));
 		
-		redSlider = createColorSlider(Color.red, 60);
-		greenSlider = createColorSlider(Color.green, 120);
-		blueSlider = createColorSlider(Color.blue, 180);
+		redSlider = createColorSlider(Color.red, defaultColor.getRed());
+		greenSlider = createColorSlider(Color.green, defaultColor.getGreen());
+		blueSlider = createColorSlider(Color.blue, defaultColor.getBlue());
 		
 		slidersPanel.add(redSlider);
 		slidersPanel.add(greenSlider);
@@ -101,7 +102,8 @@ public class ColorManager extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				Color color = JColorChooser.showDialog(null, "Choose Color", Color.green);
+				color = JColorChooser.showDialog(null, "Choose Color", Color.green);
+				updateColor();
 			}
 		});
 		
@@ -132,7 +134,7 @@ public class ColorManager extends JPanel{
 		add(centerPanel);
 	}
 	
-	private JSlider createColorSlider(Color color, int value){
+	private JSlider createColorSlider(final Color color, int value){
 		JSlider colorSlider = new JSlider(){
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -154,11 +156,24 @@ public class ColorManager extends JPanel{
 			
 			@Override
 			public void stateChanged(ChangeEvent paramChangeEvent) {
+				ColorManager.this.color = new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue());
 				repaint();
 			}
 		});
 	
 		return colorSlider;
+	}
+	
+	protected void updateColor() {
+		redSlider.setValue(color.getRed());
+		greenSlider.setValue(color.getGreen());
+		blueSlider.setValue(color.getBlue());
+		revalidate();
+		repaint();
+	}
+
+	private Color getInverted(Color c){
+		return new Color(255-c.getRed(), 255-c.getGreen(), 255-c.getBlue());
 	}
 
 }

@@ -85,6 +85,7 @@ public class Layer extends JPanel implements MouseListener{
 		isVisiblePanelInner.setLayout(new BoxLayout(isVisiblePanelInner, BoxLayout.X_AXIS));
 		
 		JCheckBox isVisibleCheckBox = new JCheckBox("Visible");
+		isVisibleCheckBox.setSelected(true);
 		isVisibleCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 		isVisiblePanelInner.add(isVisibleCheckBox);
 		isVisibleCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
