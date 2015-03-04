@@ -102,8 +102,7 @@ public class ColorManager extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				color = JColorChooser.showDialog(null, "Choose Color", Color.green);
-				updateColor();
+				updateColor(JColorChooser.showDialog(null, "Choose Color", color));
 			}
 		});
 		
@@ -156,20 +155,33 @@ public class ColorManager extends JPanel{
 			
 			@Override
 			public void stateChanged(ChangeEvent paramChangeEvent) {
-				ColorManager.this.color = new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue());
-				repaint();
+				if (!lockSliders){
+					ColorManager.this.color = getSliderColors();
+					repaint();
+				}
+			}
+			
+			private Color getSliderColors(){
+				return new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue());
 			}
 		});
 	
 		return colorSlider;
 	}
 	
-	protected void updateColor() {
-		redSlider.setValue(color.getRed());
-		greenSlider.setValue(color.getGreen());
-		blueSlider.setValue(color.getBlue());
-		revalidate();
-		repaint();
+	boolean lockSliders = false;
+	
+	protected void updateColor(Color c) {
+		if (c != null){
+			lockSliders = true;
+			color = c;
+			redSlider.setValue(color.getRed());
+			greenSlider.setValue(color.getGreen());
+			blueSlider.setValue(color.getBlue());
+			lockSliders = false;
+			revalidate();
+			repaint();
+		}
 	}
 
 	private Color getInverted(Color c){

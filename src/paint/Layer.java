@@ -27,7 +27,7 @@ import javax.swing.BoxLayout;
 public class Layer extends JPanel implements MouseListener{
 	
 	private Image thumbnail/*, snapshot*/;
-	private int thumbSize = 50;
+	private int thumbSize = 46;
 	private String name;
 	//private int ratio = 1;
 	//private Layer me;
@@ -42,7 +42,7 @@ public class Layer extends JPanel implements MouseListener{
 		this.adult = parent;
 		this.name = name;
 		setLayout(new BorderLayout(0, 0));
-		setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
+		setMaximumSize(new Dimension(Integer.MAX_VALUE, thumbSize + 6));
 		
 		
 		defaultBorder= BorderFactory.createLineBorder(Color.gray);

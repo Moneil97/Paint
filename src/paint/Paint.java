@@ -22,7 +22,6 @@ public class Paint extends JFrame{
             	setupFrame();
         		addListeners();
         		
-        		
             }
     	});
 	}
