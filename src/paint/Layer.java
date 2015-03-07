@@ -24,7 +24,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
-public class Layer extends JPanel implements MouseListener{
+public abstract class Layer extends JPanel implements MouseListener{
 	
 	private Image thumbnail/*, snapshot*/;
 	private int thumbSize = 46;
@@ -94,6 +94,8 @@ public class Layer extends JPanel implements MouseListener{
 		
 	}
 	
+	abstract void layerChanged(Layer currentLayer);
+	
 	public void changeName(String name) {
 		this.name = name;
 		nameLabel.setText(this.name);
@@ -128,6 +130,8 @@ public class Layer extends JPanel implements MouseListener{
 		for (Layer l : adult.getLayerList())
 			l.setSelected(false);
 		setSelected(true);
+		
+		layerChanged(this);
 	}
 
 	@Override

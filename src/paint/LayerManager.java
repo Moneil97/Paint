@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,11 +27,9 @@ public class LayerManager extends JPanel{
 	private JButton btnMoveUp;
 	private JButton btnMoveDown;
 	private int layerCount;
-	private LayerManager me;
 	
 	public LayerManager(){
 		this.setName("LayerManager");
-		this.me = this;
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -69,8 +66,9 @@ public class LayerManager extends JPanel{
 		panel_1.add(btnMoveDown);
 		actionListenersSetup();
 		layers = new ArrayList<Layer>();
-		addLayer(new Layer(this, "Default Layer"));
-		layers.get(0).setSelected(true);
+		addLayer("Default Layer");
+		selectedLayer = layers.get(0);
+		selectedLayer.setSelected(true);
 	}
 	
 	private void actionListenersSetup(){
@@ -79,7 +77,7 @@ public class LayerManager extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Place new layer above currently selected layer
-				addLayer(new Layer(me, "Layer " + layerCount), getCurrentLayerNum());
+				addLayer("Layer " + layerCount, getCurrentLayerNum());
 			}
 		});
 		
@@ -88,7 +86,7 @@ public class LayerManager extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter a new name for the layer: ");
 				if (name != null)
-					getCurrentLayer().changeName(name);
+					selectedLayer.changeName(name);
 			}
 		});
 		
@@ -96,25 +94,45 @@ public class LayerManager extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int currentSpot = getCurrentLayerNum();
-				deleteLayer(getCurrentLayer());
-				layers.get((currentSpot > 0 ? currentSpot-1 : 0)).setSelected(true);
+				deleteLayer(selectedLayer);
+				selectedLayer = layers.get((currentSpot > 0 ? currentSpot-1 : 0));
+				selectedLayer.setSelected(true);
 			}
 		});
 		
 		btnMoveUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveUp(getCurrentLayer());
+				moveUp(selectedLayer);
 			}
 		});
 		
 		btnMoveDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown(getCurrentLayer());
+				moveDown(selectedLayer);
 			}
 		});
 		
+	}
+	
+	public void addLayer(String s){
+		addLayer(s, layers.size());
+	}
+	
+	private void addLayer(String s, int spot) {
+		layers.add(spot, new Layer(this, s){
+
+			@Override
+			void layerChanged(Layer currentLayer) {
+				System.out.println(currentLayer + "is now the layer");
+				LayerManager.this.selectedLayer = currentLayer;
+			}
+			
+		});
+		updateLayerPositions();
+		layerCount++;
+		revalidate();
 	}
 	
 	protected void moveDown(Layer currentLayer) {
@@ -131,33 +149,18 @@ public class LayerManager extends JPanel{
 		updateLayerPositions();
 	}
 
-	public Layer getCurrentLayer(){
-		for (Layer l : layers)
-			if (l.isSelected())
-				return l;
-		
-		return null;
+	private Layer selectedLayer;
+	
+	public Layer getSelectedLayer(){
+		return selectedLayer;
 	}
 	
 	public int getCurrentLayerNum(){
-		return layers.indexOf(getCurrentLayer());
+		return layers.indexOf(getSelectedLayer());
 	}
 
 	public List<Layer> getLayerList(){
 		return layers;
-	}
-	
-	public void addLayer(Layer layer) {
-		layers.add(layer);
-		updateLayerPositions();
-		layerCount++;
-	}
-	
-	public void addLayer(Layer layer, int spot) {
-		layers.add(spot, layer);
-		updateLayerPositions();
-		layerCount++;
-		revalidate();
 	}
 	
 	public void deleteLayer(Layer layer){

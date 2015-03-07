@@ -23,7 +23,7 @@ public class BottomPanel extends JSplitPane {
 	}
 
 	public void addLayerToManager(String string) {
-		layersManager.addLayer(new Layer(layersManager, string));
+		layersManager.addLayer(string);
 	}
 
 
