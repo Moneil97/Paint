@@ -35,6 +35,7 @@ public class LayerManager extends JPanel{
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(9);
 		add(scrollPane);
 		
 //		JPanel header = new JPanel();
@@ -125,7 +126,7 @@ public class LayerManager extends JPanel{
 
 			@Override
 			void layerChanged(Layer currentLayer) {
-				System.out.println(currentLayer + "is now the layer");
+				//System.out.println(currentLayer + "is now the layer");
 				LayerManager.this.selectedLayer = currentLayer;
 			}
 			
