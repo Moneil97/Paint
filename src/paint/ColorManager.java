@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,6 +166,15 @@ public class ColorManager extends JPanel{
 			private Color getSliderColors(){
 				return new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue());
 			}
+		});
+		
+		colorSlider.addMouseWheelListener(new MouseWheelListener() {
+			
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				colorSlider.setValue(colorSlider.getValue() + 5 * e.getWheelRotation());
+			}
+			
 		});
 	
 		return colorSlider;
