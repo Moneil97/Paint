@@ -1,6 +1,7 @@
 package paint;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
 public class LayerManager extends JPanel{
@@ -105,6 +107,7 @@ public class LayerManager extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				moveUp(selectedLayer);
+				SwingUtilities.getRoot(LayerManager.this).repaint();
 			}
 		});
 		
@@ -112,6 +115,7 @@ public class LayerManager extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				moveDown(selectedLayer);
+				SwingUtilities.getRoot(LayerManager.this).repaint();
 			}
 		});
 		
@@ -162,6 +166,12 @@ public class LayerManager extends JPanel{
 
 	public List<Layer> getLayerList(){
 		return layers;
+	}
+	
+	public List<Layer> getLayerListReversed(){
+		ArrayList<Layer> layerz = new ArrayList<Layer>(layers);
+		Collections.reverse(layerz);
+		return layerz;
 	}
 	
 	public void deleteLayer(Layer layer){

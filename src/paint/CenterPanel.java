@@ -80,12 +80,9 @@ public class CenterPanel extends JPanel {
 		g.fillRect(0,0, this.getWidth(), this.getHeight());
 		
 		
-		for (Layer l : layerManager.getLayerList()){
+		for (Layer l : layerManager.getLayerListReversed()){
 			l.drawPoint(g);
 		}
-		
-//		g.setColor(colorManager.getColor());
-//		g.fillRect(p.x, p.y, 5, 5);
 		
 	}
 
