@@ -100,6 +100,7 @@ public class LayerManager extends JPanel{
 				deleteLayer(selectedLayer);
 				selectedLayer = layers.get((currentSpot > 0 ? currentSpot-1 : 0));
 				selectedLayer.setSelected(true);
+				SwingUtilities.getRoot(LayerManager.this).repaint();
 			}
 		});
 		
@@ -130,7 +131,6 @@ public class LayerManager extends JPanel{
 
 			@Override
 			void layerChanged(Layer currentLayer) {
-				//System.out.println(currentLayer + "is now the layer");
 				LayerManager.this.selectedLayer = currentLayer;
 			}
 			
