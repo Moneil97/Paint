@@ -139,8 +139,8 @@ public abstract class Layer extends JPanel implements MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
 
-	Point p = new Point(0,0);
-	Color c = Color.black;
+	Point p = new Point(-10,-10);
+	Color c = new Color(0,0,0,0);
 	
 	public void drawPoint(Graphics2D g) {
 		g.setColor(c);
