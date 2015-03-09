@@ -43,6 +43,8 @@ public class CenterPanel extends JPanel {
 				selectedLayer.addToSnapshotHistory(selectedLayer.getSnapshot());
 				selectedLayer.drawFreeDraw((Graphics2D) selectedLayer.getSnapshot().getGraphics());
 				selectedLayer.getFreeDrawPoints().clear();
+				selectedLayer.updateThumbnail();
+				colorManager.addRecentColor(colorManager.getColor());
 				repaint();
 			}
 			

@@ -32,6 +32,7 @@ public class ColorManager extends JPanel{
 	private JSlider blueSlider;
 	final private Color defaultColor = new Color(60,120,180);
 	private Color color = defaultColor;
+	List <ColorTile> tiles;
 
 	public ColorManager() {
 		
@@ -99,10 +100,10 @@ public class ColorManager extends JPanel{
 		final int recentRows = 2, recentColumns = 14;
 		recent.setLayout(new GridLayout(recentRows, recentColumns));
 		
-		List <ColorTile> tiles = new ArrayList<ColorTile>();
+		tiles = new ArrayList<ColorTile>();
 		
 		for (int i=0; i< recentRows * recentColumns; i++){
-			tiles.add(new ColorTile());
+			tiles.add(new ColorTile(Color.white));
 			recent.add(tiles.get(i));
 		}
 		
@@ -185,6 +186,13 @@ public class ColorManager extends JPanel{
 
 	public Color getColor() {
 		return color;
+	}
+
+	int tileCounter = 0;
+	
+	public void addRecentColor(Color color) {
+		tiles.get(tileCounter++).setColor(color);
+		repaint();
 	}
 
 }
