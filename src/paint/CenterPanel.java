@@ -40,7 +40,8 @@ public class CenterPanel extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				Layer selectedLayer = layerManager.getSelectedLayer();
-				selectedLayer.drawFreeDraw((Graphics2D) layerManager.getSelectedLayer().snapshot.getGraphics());
+				selectedLayer.addToSnapshotHistory(selectedLayer.getSnapshot());
+				selectedLayer.drawFreeDraw((Graphics2D) selectedLayer.getSnapshot().getGraphics());
 				selectedLayer.getFreeDrawPoints().clear();
 				repaint();
 			}

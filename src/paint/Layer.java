@@ -33,7 +33,7 @@ import javax.swing.BoxLayout;
 @SuppressWarnings("serial")
 public abstract class Layer extends JPanel implements MouseListener{
 	
-	Image thumbnail, snapshot;// = new BufferedImage(900, 450, BufferedImage.TYPE_INT_RGB);
+	private Image thumbnail, snapshot;// = new BufferedImage(900, 450, BufferedImage.TYPE_INT_RGB);
 	private int thumbSize = 46;
 	private String name;
 	//private int ratio = 1;
@@ -44,6 +44,7 @@ public abstract class Layer extends JPanel implements MouseListener{
 	private Image blankThumbnail;
 	private JLabel nameLabel;
 	private JCheckBox isVisibleCheckBox;
+	private List<Image> snapshotHistory = new ArrayList<Image>();
 	
 	public Layer(LayerManager parent, String name){
 		//this.me = this;
@@ -192,6 +193,31 @@ public abstract class Layer extends JPanel implements MouseListener{
 
 	public void setSelectedColor(Color color) {
 		selectedColor = color;
+	}
+	
+	public Image getSnapshot(){
+		return snapshot;
+	}
+	
+	public void addToSnapshotHistory(Image image){
+		snapshotHistory.add(image);
+	}
+	
+	int undoCounter = -5;
+	
+	public void undo(){
+		
+		if (undoCounter > 0)
+			undoCounter = snapshotHistory.size()-1;
+		else
+			undoCounter --;
+		
+		snapshot = snapshotHistory.get(undoCounter);
+	}
+	
+	public void redo(){
+		undoCounter ++;
+		snapshot = snapshotHistory.get(undoCounter);
 	}
 
 }
