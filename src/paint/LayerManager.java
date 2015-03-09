@@ -142,16 +142,20 @@ public class LayerManager extends JPanel{
 	
 	protected void moveDown(Layer currentLayer) {
 		int newSpot = layers.indexOf(currentLayer) + 1;
-		layers.remove(currentLayer);
-		layers.add(newSpot, currentLayer);
-		updateLayerPositions();
+		if (newSpot < layers.size()){
+			layers.remove(currentLayer);
+			layers.add(newSpot, currentLayer);
+			updateLayerPositions();
+		}
 	}
 
 	protected void moveUp(Layer currentLayer) {
 		int newSpot = layers.indexOf(currentLayer) - 1;
-		layers.remove(currentLayer);
-		layers.add(newSpot, currentLayer);
-		updateLayerPositions();
+		if (newSpot >= 0){
+			layers.remove(currentLayer);
+			layers.add(newSpot, currentLayer);
+			updateLayerPositions();
+		}
 	}
 
 	private Layer selectedLayer;
@@ -191,6 +195,10 @@ public class LayerManager extends JPanel{
 		
 		revalidate();
 		repaint();
+	}
+	
+	public void say(Object s){
+		System.out.println(s);
 	}
 	
 }
