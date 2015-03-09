@@ -57,10 +57,11 @@ public abstract class Layer extends JPanel implements MouseListener{
 		defaultBorder= BorderFactory.createLineBorder(Color.gray);
 		selectedBoder = BorderFactory.createLineBorder(Color.blue);
 		this.setBorder(defaultBorder);
-		blankThumbnail = new BufferedImage(thumbSize, thumbSize, BufferedImage.TYPE_INT_RGB);
-		blankThumbnail.getGraphics().setColor(Color.WHITE);
-		blankThumbnail.getGraphics().fillRect(0, 0, thumbSize, thumbSize);
-		thumbnail = blankThumbnail;
+		
+//		blankThumbnail = new BufferedImage(thumbSize, thumbSize, BufferedImage.TYPE_INT_RGB);
+//		blankThumbnail.getGraphics().setColor(Color.WHITE);
+//		blankThumbnail.getGraphics().fillRect(0, 0, thumbSize, thumbSize);
+//		thumbnail = blankThumbnail;
 		
 		JPanel thumbnailPanel = new JPanel(){
 			
@@ -69,6 +70,7 @@ public abstract class Layer extends JPanel implements MouseListener{
 				super.paintComponent(g);
 				
 				g.drawImage(thumbnail, 2, 2, null);
+				//g.drawImage(snapshot.getScaledInstance(thumbSize, thumbSize, Image.SCALE_DEFAULT), 2, 2, null);
 				g.setColor(Color.gray);
 				g.drawRect(2, 2, thumbSize, thumbSize);
 			}
@@ -112,6 +114,8 @@ public abstract class Layer extends JPanel implements MouseListener{
 		Graphics g = snapshot.getGraphics();
 		g.setColor(new Color(0f,0f,0f,0f));
 		g.fillRect(0, 0, snapshot.getWidth(null), snapshot.getHeight(null));
+		
+		updateThumbnail();
 		
 	}
 	
@@ -218,6 +222,11 @@ public abstract class Layer extends JPanel implements MouseListener{
 	public void redo(){
 		undoCounter ++;
 		snapshot = snapshotHistory.get(undoCounter);
+	}
+
+	public void updateThumbnail(){
+		thumbnail = snapshot.getScaledInstance(thumbSize, thumbSize, Image.SCALE_SMOOTH);
+		repaint();
 	}
 
 }
