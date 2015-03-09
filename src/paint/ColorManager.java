@@ -35,6 +35,8 @@ public class ColorManager extends JPanel{
 
 	public ColorManager() {
 		
+		this.setName("ColorManager");
+		
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
 		
@@ -45,34 +47,16 @@ public class ColorManager extends JPanel{
 				super.paintComponent(g1);
 				Graphics2D g = (Graphics2D) g1;
 				
-//				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//						RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//				g.setRenderingHint(RenderingHints.KEY_RENDERING,
-//						RenderingHints.VALUE_RENDER_QUALITY);
-				
-				g.setColor(color);
+				g.setColor(getColor());
 				int padding = 5;
 				g.fillRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
 				g.setColor(Color.black);
 				g.drawRect(padding, padding, getWidth()-padding*2, getHeight()-padding*2);
 				g.setFont(new Font("Arial", Font.PLAIN, 16));
-				g.setColor(getInverted(color));
+				g.setColor(getInverted(getColor()));
 				String s = redSlider.getValue() + ", " +  greenSlider.getValue() + ", " + blueSlider.getValue();
 				g.drawString(s, getWidth() - g.getFontMetrics().stringWidth(s) - 10, 40);
 				
-				//drawOutline(g,s);
-			}
-
-			@SuppressWarnings("unused")
-			private void drawOutline(Graphics2D g, String s) {
-				g.setColor(Color.black);
-				g.translate(getWidth() - g.getFontMetrics().stringWidth(s) - 10, 40);
-				g.draw(getTextOutline(g, s));
-			}
-
-			private Shape getTextOutline(Graphics2D g, String string) {
-				return g.getFont().createGlyphVector(g.getFontRenderContext(), string).getOutline();
 			}
 			
 		};
@@ -104,7 +88,7 @@ public class ColorManager extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				updateColor(JColorChooser.showDialog(null, "Choose Color", color));
+				setColor(JColorChooser.showDialog(null, "Choose Color", getColor()));
 			}
 		});
 		
@@ -158,7 +142,7 @@ public class ColorManager extends JPanel{
 			@Override
 			public void stateChanged(ChangeEvent paramChangeEvent) {
 				if (!lockSliders){
-					ColorManager.this.color = getSliderColors();
+					ColorManager.this.setColor(getSliderColors());
 					repaint();
 				}
 			}
@@ -182,7 +166,7 @@ public class ColorManager extends JPanel{
 	
 	boolean lockSliders = false;
 	
-	protected void updateColor(Color c) {
+	protected void setColor(Color c) {
 		if (c != null){
 			lockSliders = true;
 			color = c;
@@ -197,6 +181,10 @@ public class ColorManager extends JPanel{
 
 	private Color getInverted(Color c){
 		return new Color(255-c.getRed(), 255-c.getGreen(), 255-c.getBlue());
+	}
+
+	public Color getColor() {
+		return color;
 	}
 
 }

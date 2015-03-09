@@ -18,7 +18,7 @@ public class Paint extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-      
+            	Paint.this.setName("Paint");
             	setupFrame();
         		addListeners();
         		
@@ -29,14 +29,16 @@ public class Paint extends JFrame{
 
 
 	private void setupFrame() {
-		JPanel centerPanel = new CenterPanel();
+		
 		menuBar = new TopMenuBar();
 		bottomPanel = new BottomPanel();
+		ToolBarPanel toolbarPanel = new ToolBarPanel();
+		JPanel centerPanel = new CenterPanel(this);
 		JPanel leftPanel = new LeftPanel();
 		JPanel rightPanel = new RightPanel();
 		
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
-		//getContentPane().add(topPanel, BorderLayout.NORTH);
+		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		setJMenuBar(menuBar);
 		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		getContentPane().add(leftPanel, BorderLayout.WEST);
