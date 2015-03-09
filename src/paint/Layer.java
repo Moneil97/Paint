@@ -8,7 +8,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
@@ -136,6 +138,14 @@ public abstract class Layer extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
+
+	Point p = new Point(0,0);
+	Color c = Color.black;
+	
+	public void drawPoint(Graphics2D g) {
+		g.setColor(c);
+		g.fillRect(p.x, p.y, 5, 5);
+	}
 
 	
 

@@ -46,7 +46,9 @@ public class CenterPanel extends JPanel {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				p = e.getPoint();
+				layerManager.getSelectedLayer().c = colorManager.getColor();
+				layerManager.getSelectedLayer().p = e.getPoint();
+				//p = e.getPoint();
 				repaint();
 			}
 			
@@ -77,8 +79,13 @@ public class CenterPanel extends JPanel {
 		g.setColor(Color.white);
 		g.fillRect(0,0, this.getWidth(), this.getHeight());
 		
-		g.setColor(colorManager.getColor());
-		g.fillRect(p.x, p.y, 5, 5);
+		
+		for (Layer l : layerManager.getLayerList()){
+			l.drawPoint(g);
+		}
+		
+//		g.setColor(colorManager.getColor());
+//		g.fillRect(p.x, p.y, 5, 5);
 		
 	}
 
