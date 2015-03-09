@@ -1,6 +1,7 @@
 package paint;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,6 +10,9 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -19,7 +23,6 @@ public class CenterPanel extends JPanel {
 	private ColorManager colorManager;
 	private LayerManager layerManager;
 	private Rectangle Bounds;
-	private Point p = new Point(0,0);
 
 	public CenterPanel(Paint parent) {
 		
@@ -42,33 +45,37 @@ public class CenterPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			
 			@Override
-			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				layerManager.getSelectedLayer().c = colorManager.getColor();
-				layerManager.getSelectedLayer().p = e.getPoint();
-				//p = e.getPoint();
+			public void mouseReleased(MouseEvent e) {
+				Layer selectedLayer = layerManager.getSelectedLayer();
+				selectedLayer.drawFreeDraw((Graphics2D) layerManager.getSelectedLayer().snapshot.getGraphics());
+				selectedLayer.getFreeDrawPoints().clear();
 				repaint();
 			}
 			
 			@Override
-			public void mouseExited(MouseEvent e) {}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
+			public void mousePressed(MouseEvent e) {
+				Layer selectedLayer = layerManager.getSelectedLayer();
+				selectedLayer.setSelectedColor(colorManager.getColor());
+				selectedLayer.getFreeDrawPoints().add(e.getPoint());
+				repaint();
 			}
 			
 		});
+		
+		addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent arg0) {
+				
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				layerManager.getSelectedLayer().getFreeDrawPoints().add(e.getPoint());
+				repaint();
+			}
+		});
 	}
-	
-//	public Dimension getSize(){
-//		return this.getSize();
-//	}
 	
 	@Override
 	protected void paintComponent(Graphics g1) {
@@ -79,11 +86,10 @@ public class CenterPanel extends JPanel {
 		g.setColor(Color.white);
 		g.fillRect(0,0, this.getWidth(), this.getHeight());
 		
-		
 		for (Layer l : layerManager.getLayerListReversed()){
-			l.drawPoint(g);
+			l.draw(g);
 		}
-		
+
 	}
 
 	public void say(Object s){

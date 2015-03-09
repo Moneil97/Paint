@@ -12,6 +12,7 @@ public class Paint extends JFrame{
 
 	private BottomPanel bottomPanel;
 	private TopMenuBar menuBar;
+	private CenterPanel centerPanel;
 
 
 	public Paint() {
@@ -21,6 +22,7 @@ public class Paint extends JFrame{
             	Paint.this.setName("Paint");
             	setupFrame();
         		addListeners();
+//        		printSize();
         		
             }
     	});
@@ -33,7 +35,7 @@ public class Paint extends JFrame{
 		menuBar = new TopMenuBar();
 		bottomPanel = new BottomPanel();
 		ToolBarPanel toolbarPanel = new ToolBarPanel();
-		JPanel centerPanel = new CenterPanel(this);
+		centerPanel = new CenterPanel(this);
 		JPanel leftPanel = new LeftPanel();
 		JPanel rightPanel = new RightPanel();
 		

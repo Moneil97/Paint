@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -31,7 +33,7 @@ import javax.swing.BoxLayout;
 @SuppressWarnings("serial")
 public abstract class Layer extends JPanel implements MouseListener{
 	
-	private Image thumbnail/*, snapshot*/;
+	Image thumbnail, snapshot;// = new BufferedImage(900, 450, BufferedImage.TYPE_INT_RGB);
 	private int thumbSize = 46;
 	private String name;
 	//private int ratio = 1;
@@ -105,6 +107,11 @@ public abstract class Layer extends JPanel implements MouseListener{
 		
 		addMouseListener(this);
 		
+		snapshot = new BufferedImage(900, 450, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = snapshot.getGraphics();
+		g.setColor(new Color(0f,0f,0f,0f));
+		g.fillRect(0, 0, snapshot.getWidth(null), snapshot.getHeight(null));
+		
 	}
 	
 	abstract void layerChanged(Layer currentLayer);
@@ -150,20 +157,41 @@ public abstract class Layer extends JPanel implements MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
 
-	Point p = new Point(-10,-10);
-	Color c = new Color(0,0,0,0);
+	private Color selectedColor = new Color(0,0,0,0);
 	
-	public void drawPoint(Graphics2D g) {
-		if (isVisibleCheckBox.isSelected()){
-			g.setColor(c);
-			g.fillRect(p.x, p.y, 5, 5);
-		}
+	List<Point> freeDrawPoints = new ArrayList<Point>();
+	
+	public List<Point> getFreeDrawPoints(){
+		return freeDrawPoints;
 	}
 	
 	public void say(Object s){
 		System.out.println(s);
 	}
 
-	
+	public void drawFreeDraw(Graphics2D g) {
+
+		g.setColor(selectedColor);
+		
+		if (freeDrawPoints.size() > 1)
+			for (int i =0; i < freeDrawPoints.size()-1; i++){
+				Point p1 = freeDrawPoints.get(i);
+				Point p2 = freeDrawPoints.get(i+1);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			}
+		else if (freeDrawPoints.size() == 1)
+			g.fillRect(freeDrawPoints.get(0).x, freeDrawPoints.get(0).y, 5, 5);
+	}
+
+	public void draw(Graphics2D g) {
+		if (isVisibleCheckBox.isSelected()){
+			g.drawImage(snapshot, 0, 0, null);
+			drawFreeDraw(g);
+		}
+	}
+
+	public void setSelectedColor(Color color) {
+		selectedColor = color;
+	}
 
 }
