@@ -3,6 +3,7 @@ package paint;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,6 +18,8 @@ import javax.swing.SwingConstants;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -38,6 +41,7 @@ public abstract class Layer extends JPanel implements MouseListener{
 	private Border selectedBoder, defaultBorder;
 	private Image blankThumbnail;
 	private JLabel nameLabel;
+	private JCheckBox isVisibleCheckBox;
 	
 	public Layer(LayerManager parent, String name){
 		//this.me = this;
@@ -86,7 +90,14 @@ public abstract class Layer extends JPanel implements MouseListener{
 		isVisiblePanelOuter.add(isVisiblePanelInner);
 		isVisiblePanelInner.setLayout(new BoxLayout(isVisiblePanelInner, BoxLayout.X_AXIS));
 		
-		JCheckBox isVisibleCheckBox = new JCheckBox("Visible");
+		isVisibleCheckBox = new JCheckBox("Visible");
+		isVisibleCheckBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.getRoot(Layer.this).repaint();
+			}
+		});
 		isVisibleCheckBox.setSelected(true);
 		isVisibleCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 		isVisiblePanelInner.add(isVisibleCheckBox);
@@ -143,8 +154,14 @@ public abstract class Layer extends JPanel implements MouseListener{
 	Color c = new Color(0,0,0,0);
 	
 	public void drawPoint(Graphics2D g) {
-		g.setColor(c);
-		g.fillRect(p.x, p.y, 5, 5);
+		if (isVisibleCheckBox.isSelected()){
+			g.setColor(c);
+			g.fillRect(p.x, p.y, 5, 5);
+		}
+	}
+	
+	public void say(Object s){
+		System.out.println(s);
 	}
 
 	
