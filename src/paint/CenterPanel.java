@@ -1,28 +1,21 @@
 package paint;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.util.List;
-
+import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class CenterPanel extends JPanel {
 
-	private Paint paint;
+	//private Paint paint;
 	private ColorManager colorManager;
 	private LayerManager layerManager;
-	private Rectangle Bounds;
+//	private Rectangle Bounds;
 
 	public CenterPanel(Paint parent) {
 		
@@ -31,13 +24,13 @@ public class CenterPanel extends JPanel {
 			@Override
             public void run() {
 				
-            	paint = parent;
+            	//paint = parent;
             	colorManager = (ColorManager) ComponetFinder.getComponet("ColorManager", parent);
             	layerManager = (LayerManager) ComponetFinder.getComponet("LayerManager", parent);
             	say(layerManager.getSelectedLayer());
             	
-            	Bounds = new Rectangle(0,0, CenterPanel.this.getWidth(), CenterPanel.this.getHeight());
-            	say(Bounds);
+//            	Bounds = new Rectangle(0,0, CenterPanel.this.getWidth(), CenterPanel.this.getHeight());
+//            	say(Bounds);
             }
     	});
 		
@@ -62,12 +55,7 @@ public class CenterPanel extends JPanel {
 			
 		});
 		
-		addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseMoved(MouseEvent arg0) {
-				
-			}
+		addMouseMotionListener(new MouseMotionAdapter() {
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
