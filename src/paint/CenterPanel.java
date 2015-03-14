@@ -44,7 +44,6 @@ public class CenterPanel extends JPanel {
 				selectedLayer.drawFreeDraw((Graphics2D) selectedLayer.getSnapshot().getGraphics());
 				selectedLayer.getFreeDrawPoints().clear();
 				selectedLayer.updateThumbnail();
-				colorManager.addRecentColor(colorManager.getColor());
 				repaint();
 			}
 			
@@ -52,6 +51,7 @@ public class CenterPanel extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				Layer selectedLayer = layerManager.getSelectedLayer();
 				selectedLayer.setSelectedColor(colorManager.getColor());
+				colorManager.addRecentColor(colorManager.getColor());
 				selectedLayer.getFreeDrawPoints().add(e.getPoint());
 				repaint();
 			}
