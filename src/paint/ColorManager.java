@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
@@ -109,7 +108,6 @@ public class ColorManager extends JPanel{
 		
 		
 		recentAndMorePanel.add(moreAndLabel, "West");
-		//recentAndMorePanel.add(recentScroller, "Center");
 		recentAndMorePanel.add(recent, "Center");
 		
 		centerPanel.add(selectedColorPanel, "North");

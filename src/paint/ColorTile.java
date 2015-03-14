@@ -1,6 +1,5 @@
 package paint;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -22,10 +21,14 @@ public class ColorTile extends JPanel {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				super.mousePressed(e);
-				
 				if (active)
-						colorManager.setColor(color);
+					colorManager.setColor(color);
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent paramMouseEvent) {
+				if (active) 
+					setToolTipText("R: " + color.getRed() + " G: " + color.getGreen() + " B: " + color.getBlue());
 			}
 		});
 	}
