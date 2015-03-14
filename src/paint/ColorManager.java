@@ -103,7 +103,7 @@ public class ColorManager extends JPanel{
 		tiles = new ArrayList<ColorTile>();
 		
 		for (int i=0; i< recentRows * recentColumns; i++){
-			tiles.add(new ColorTile(Color.white));
+			tiles.add(new ColorTile(Color.white, this));
 			recent.add(tiles.get(i));
 		}
 		
@@ -187,12 +187,43 @@ public class ColorManager extends JPanel{
 	public Color getColor() {
 		return color;
 	}
-
-	int tileCounter = 0;
 	
 	public void addRecentColor(Color color) {
-		tiles.get(tileCounter++).setColor(color);
+		
+		int usedColorPos = colorUsed(color);
+		
+		if (usedColorPos >= 0){
+			
+			for (int i = usedColorPos-1; i >= 0; i--)
+				tiles.get(i+1).setColor(tiles.get(i).getColor());
+			
+			tiles.get(0).setColor(color);
+		}
+		else{
+			int count = getActiveCount();
+			
+			for (int i = tiles.size()-2; i >= 0; i--)
+				tiles.get(i+1).setColor(tiles.get(i).getColor());
+			
+			if (count < tiles.size()) tiles.get(count).setActive(true);
+			tiles.get(0).setColor(color);
+		}
+		
 		repaint();
+	}
+	
+	private int colorUsed(Color c) {
+		for (int i =0; i < tiles.size(); i++)
+			if (tiles.get(i).getColor().equals(c))
+				return i;
+		return -1;
+	}
+
+	private int getActiveCount(){
+		int count = 0;
+		for (ColorTile t: tiles)
+			count += (t.isActive() ? 1:0);
+		return count;
 	}
 
 }
