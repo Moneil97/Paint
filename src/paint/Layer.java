@@ -33,21 +33,18 @@ import javax.swing.BoxLayout;
 @SuppressWarnings("serial")
 public abstract class Layer extends JPanel implements MouseListener{
 	
-	private Image thumbnail, snapshot;// = new BufferedImage(900, 450, BufferedImage.TYPE_INT_RGB);
+	private Image thumbnail;
 	private int thumbSize = 46;
 	private String name;
 	//private int ratio = 1;
-	//private Layer me;
 	private boolean selected = false;
 	private LayerManager adult;
 	private Border selectedBoder, defaultBorder;
-	private Image blankThumbnail;
 	private JLabel nameLabel;
 	private JCheckBox isVisibleCheckBox;
-	private List<Image> snapshotHistory = new ArrayList<Image>();
+	private List<BufferedImage> snapshotHistory = new ArrayList<BufferedImage>();
 	
 	public Layer(LayerManager parent, String name){
-		//this.me = this;
 		this.adult = parent;
 		this.name = name;
 		setLayout(new BorderLayout(0, 0));
@@ -57,11 +54,6 @@ public abstract class Layer extends JPanel implements MouseListener{
 		defaultBorder= BorderFactory.createLineBorder(Color.gray);
 		selectedBoder = BorderFactory.createLineBorder(Color.blue);
 		this.setBorder(defaultBorder);
-		
-//		blankThumbnail = new BufferedImage(thumbSize, thumbSize, BufferedImage.TYPE_INT_RGB);
-//		blankThumbnail.getGraphics().setColor(Color.WHITE);
-//		blankThumbnail.getGraphics().fillRect(0, 0, thumbSize, thumbSize);
-//		thumbnail = blankThumbnail;
 		
 		JPanel thumbnailPanel = new JPanel(){
 			
@@ -110,10 +102,10 @@ public abstract class Layer extends JPanel implements MouseListener{
 		
 		addMouseListener(this);
 		
-		snapshot = new BufferedImage(900, 450, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = snapshot.getGraphics();
+		addToSnapshotHistory(new BufferedImage(900, 450, BufferedImage.TYPE_INT_ARGB));
+		Graphics g = getSnapshot().getGraphics();
 		g.setColor(new Color(0f,0f,0f,0f));
-		g.fillRect(0, 0, snapshot.getWidth(null), snapshot.getHeight(null));
+		g.fillRect(0, 0, getSnapshot().getWidth(null), getSnapshot().getHeight(null));
 		
 		updateThumbnail();
 		
@@ -190,7 +182,7 @@ public abstract class Layer extends JPanel implements MouseListener{
 
 	public void draw(Graphics2D g) {
 		if (isVisibleCheckBox.isSelected()){
-			g.drawImage(snapshot, 0, 0, null);
+			g.drawImage(getSnapshot(), 0, 0, null);
 			drawFreeDraw(g);
 		}
 	}
@@ -199,34 +191,57 @@ public abstract class Layer extends JPanel implements MouseListener{
 		selectedColor = color;
 	}
 	
-	public Image getSnapshot(){
-		return snapshot;
+	public BufferedImage getSnapshot(){
+		return snapshotHistory.get(imageCounter);
 	}
 	
-	public void addToSnapshotHistory(Image image){
+	public void addToSnapshotHistory(BufferedImage image){
+		
+		say("Snapshot size: " + snapshotHistory.size() + "  Counter: " + imageCounter);
+		
+		if (imageCounter < snapshotHistory.size()-1){
+			
+			for (int i=snapshotHistory.size()-1; i > imageCounter; i--){
+				snapshotHistory.remove(i);
+				say("removed image: " + i + " of " + snapshotHistory.size());
+			}
+		}
+		
+		say("Snapshot size: " + snapshotHistory.size() + "  Counter: " + imageCounter);
 		snapshotHistory.add(image);
+		imageCounter = snapshotHistory.size()-1;
 	}
 	
-	int undoCounter = -5;
+	private int imageCounter = 0;
 	
 	public void undo(){
-		
-		if (undoCounter > 0)
-			undoCounter = snapshotHistory.size()-1;
-		else
-			undoCounter --;
-		
-		snapshot = snapshotHistory.get(undoCounter);
+		if (imageCounter > 0)
+			imageCounter --;
+		else 
+			say("can't undo");
 	}
 	
 	public void redo(){
-		undoCounter ++;
-		snapshot = snapshotHistory.get(undoCounter);
+		
+		if (imageCounter < snapshotHistory.size()-1)
+			imageCounter ++;
+		else
+			say("can't redo");
 	}
 
 	public void updateThumbnail(){
-		thumbnail = snapshot.getScaledInstance(thumbSize, thumbSize, Image.SCALE_SMOOTH);
+		thumbnail = getSnapshot().getScaledInstance(thumbSize, thumbSize, Image.SCALE_SMOOTH);
 		repaint();
+	}
+	
+	public BufferedImage getImageClone(){
+		BufferedImage original = getSnapshot();
+		
+		BufferedImage copy = new BufferedImage(original.getHeight(), original.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = copy.getGraphics();
+		g.drawImage(original, 0, 0, null);
+		
+		return copy;
 	}
 
 }

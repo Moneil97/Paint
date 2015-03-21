@@ -14,27 +14,21 @@ public class Paint extends JFrame{
 	private TopMenuBar menuBar;
 	private CenterPanel centerPanel;
 
-
 	public Paint() {
 		EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
             	Paint.this.setName("Paint");
             	setupFrame();
-        		addListeners();
-//        		printSize();
-        		
             }
     	});
 	}
-
-
 
 	private void setupFrame() {
 		
 		menuBar = new TopMenuBar();
 		bottomPanel = new BottomPanel();
-		ToolBarPanel toolbarPanel = new ToolBarPanel();
+		ToolBarPanel toolbarPanel = new ToolBarPanel(this);
 		centerPanel = new CenterPanel(this);
 		JPanel leftPanel = new LeftPanel();
 		JPanel rightPanel = new RightPanel();
@@ -54,22 +48,9 @@ public class Paint extends JFrame{
 		
 	}
 	
-	private void addListeners() {
-		
+	public BottomPanel getBottomPanel(){
+		return bottomPanel;
 	}
-	
-	
-//	private void printSize() {
-//		new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				while (true){
-//					System.out.println(centerPanel.getSize());
-//				}
-//			}
-//		}).start();
-//	}
 
 	public static void main(String[] args) {
 		

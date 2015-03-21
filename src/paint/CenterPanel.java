@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -40,8 +42,9 @@ public class CenterPanel extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				Layer selectedLayer = layerManager.getSelectedLayer();
-				selectedLayer.addToSnapshotHistory(selectedLayer.getSnapshot());
-				selectedLayer.drawFreeDraw((Graphics2D) selectedLayer.getSnapshot().getGraphics());
+				BufferedImage image = selectedLayer.getImageClone();
+				selectedLayer.drawFreeDraw(image.createGraphics());
+				selectedLayer.addToSnapshotHistory(image);
 				selectedLayer.getFreeDrawPoints().clear();
 				selectedLayer.updateThumbnail();
 				repaint();
