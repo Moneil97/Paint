@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -43,9 +45,9 @@ public class CenterPanel extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				Layer selectedLayer = layerManager.getSelectedLayer();
 				BufferedImage image = selectedLayer.getImageClone();
-				selectedLayer.drawFreeDraw(image.createGraphics());
-				selectedLayer.addToSnapshotHistory(image);
-				selectedLayer.getFreeDrawPoints().clear();
+				
+				freeDraw(selectedLayer, image);
+				
 				selectedLayer.updateThumbnail();
 				repaint();
 			}
@@ -71,6 +73,46 @@ public class CenterPanel extends JPanel {
 		});
 	}
 	
+	protected void freeDraw(Layer selectedLayer, BufferedImage image) {
+		image = stretchImageToFitPoints(image, selectedLayer.getFreeDrawPoints());
+		selectedLayer.drawFreeDraw(image.createGraphics());
+		selectedLayer.addToSnapshotHistory(image);
+		selectedLayer.getFreeDrawPoints().clear();
+	}
+
+	private BufferedImage stretchImageToFitPoints(BufferedImage image, List<Point> freeDrawPoints) {
+		
+		//Returns new instance of BufferedImage
+		
+		Point max = getLargestXandY(freeDrawPoints);
+		BufferedImage newImage;
+		
+		if (max.x > image.getWidth() || max.y > image.getHeight()){
+			say("resizing image");
+			newImage = new BufferedImage(Math.max(max.x +1, image.getWidth()), Math.max(max.y+1, image.getHeight()), BufferedImage.TYPE_INT_ARGB);
+			newImage.createGraphics().drawImage(image, 0, 0, null);
+			image = newImage;
+		}
+		else{
+			newImage = image;
+		}
+		
+		return newImage;
+		
+	}
+
+	private Point getLargestXandY(List<Point> freeDrawPoints) {
+		
+		int maxX = 0, maxY = 0;
+		
+		for (Point p : freeDrawPoints){
+			if (p.x > maxX) maxX = p.x;
+			if (p.y > maxY) maxY = p.y;
+		}
+		
+		return new Point(maxX, maxY);
+	}
+
 	@Override
 	protected void paintComponent(Graphics g1) {
 		super.paintComponent(g1);

@@ -109,6 +109,8 @@ public abstract class Layer extends JPanel implements MouseListener{
 		
 		updateThumbnail();
 		
+		say(snapshotHistory.get(0));
+		
 	}
 	
 	abstract void layerChanged(Layer currentLayer);
@@ -237,9 +239,11 @@ public abstract class Layer extends JPanel implements MouseListener{
 	public BufferedImage getImageClone(){
 		BufferedImage original = getSnapshot();
 		
-		BufferedImage copy = new BufferedImage(original.getHeight(), original.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage copy = new BufferedImage(original.getWidth(), original.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = copy.getGraphics();
 		g.drawImage(original, 0, 0, null);
+		
+		say(copy);
 		
 		return copy;
 	}
