@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -32,9 +33,6 @@ public class CenterPanel extends JPanel {
             	colorManager = (ColorManager) ComponetFinder.getComponet("ColorManager", parent);
             	layerManager = (LayerManager) ComponetFinder.getComponet("LayerManager", parent);
             	say(layerManager.getSelectedLayer());
-            	
-//            	Bounds = new Rectangle(0,0, CenterPanel.this.getWidth(), CenterPanel.this.getHeight());
-//            	say(Bounds);
             }
     	});
 		
@@ -49,7 +47,7 @@ public class CenterPanel extends JPanel {
 				if (parent.getPaintMode() == Modes.freeDraw)
 					freeDraw(selectedLayer, image);
 				else if (parent.getPaintMode() == Modes.rectangle)
-					;
+					rect(selectedLayer, image);
 				else if (parent.getPaintMode() == Modes.oval)
 					;
 				
@@ -67,7 +65,7 @@ public class CenterPanel extends JPanel {
 				if (parent.getPaintMode() == Modes.freeDraw)
 					selectedLayer.getFreeDrawPoints().add(e.getPoint());
 				else if (parent.getPaintMode() == Modes.rectangle)
-					;
+					selectedLayer.setRectPoint1(e.getPoint());
 				else if (parent.getPaintMode() == Modes.oval)
 					;
 				
@@ -81,10 +79,12 @@ public class CenterPanel extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				
+				Layer selectedLayer = layerManager.getSelectedLayer();
+				
 				if (parent.getPaintMode() == Modes.freeDraw)
-					layerManager.getSelectedLayer().getFreeDrawPoints().add(e.getPoint());
+					selectedLayer.getFreeDrawPoints().add(e.getPoint());
 				else if (parent.getPaintMode() == Modes.rectangle)
-					;
+					selectedLayer.setRectPoint2(e.getPoint());
 				else if (parent.getPaintMode() == Modes.oval)
 					;
 				
@@ -93,18 +93,31 @@ public class CenterPanel extends JPanel {
 		});
 	}
 	
-	protected void freeDraw(Layer selectedLayer, BufferedImage image) {
+	
+
+	private void freeDraw(Layer selectedLayer, BufferedImage image) {
 		image = stretchImageToFitPoints(image, selectedLayer.getFreeDrawPoints());
 		selectedLayer.drawFreeDraw(image.createGraphics());
 		selectedLayer.addToSnapshotHistory(image);
 		selectedLayer.getFreeDrawPoints().clear();
 	}
+	
+	private void rect(Layer selectedLayer, BufferedImage image) {
+		image = stretchImageToFitPoints(image, selectedLayer.getRectPoint1(), selectedLayer.getRectPoint2());
+		selectedLayer.drawRect(image.createGraphics());
+		selectedLayer.addToSnapshotHistory(image);
+		selectedLayer.setRectPoint2(null);
+	}
+	
+	private BufferedImage stretchImageToFitPoints(BufferedImage image, Point ... points) {
+		return stretchImageToFitPoints(image, Arrays.asList(points));
+	}
 
-	private BufferedImage stretchImageToFitPoints(BufferedImage image, List<Point> freeDrawPoints) {
+	private BufferedImage stretchImageToFitPoints(BufferedImage image, List<Point> points) {
 		
 		//Returns new instance of BufferedImage
 		
-		Point max = getLargestXandY(freeDrawPoints);
+		Point max = getLargestXandY(points);
 		BufferedImage newImage;
 		
 		if (max.x > image.getWidth() || max.y > image.getHeight()){

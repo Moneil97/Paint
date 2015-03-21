@@ -186,6 +186,7 @@ public abstract class Layer extends JPanel implements MouseListener{
 		if (isVisibleCheckBox.isSelected()){
 			g.drawImage(getSnapshot(), 0, 0, null);
 			drawFreeDraw(g);
+			drawRect(g);
 		}
 	}
 
@@ -237,15 +238,39 @@ public abstract class Layer extends JPanel implements MouseListener{
 	}
 	
 	public BufferedImage getImageClone(){
+		
 		BufferedImage original = getSnapshot();
 		
 		BufferedImage copy = new BufferedImage(original.getWidth(), original.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = copy.getGraphics();
 		g.drawImage(original, 0, 0, null);
 		
-		say(copy);
-		
 		return copy;
+	}
+
+	private Point rect1, rect2;
+	
+	public Point getRectPoint1() {
+		return rect1;
+	}
+	
+	public Point getRectPoint2() {
+		return rect2;
+	}
+	
+	public void setRectPoint1(Point p) {
+		rect1 = p;
+	}
+	
+	public void setRectPoint2(Point p) {
+		rect2 = p;
+	}
+	
+	void drawRect(Graphics2D g) {
+		if (rect2 != null){
+			g.setColor(selectedColor);
+			g.fillRect(Math.min(rect1.x, rect2.x), Math.min(rect1.y, rect2.y), Math.abs(rect2.x - rect1.x),  Math.abs(rect2.y - rect1.y));
+		}
 	}
 
 }
