@@ -18,12 +18,33 @@ public class ToolBarPanel extends JPanel {
 		this.layerManager = parent.getBottomPanel().getLayerManager();
 		
 		JButton btnFreeDraw = new JButton("Free Draw");
+		btnFreeDraw.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.setPaintMode(Modes.freeDraw);
+			}
+		});
 		add(btnFreeDraw);
 		
 		JButton btnRectangle = new JButton("Rectangle");
+		btnRectangle.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.setPaintMode(Modes.rectangle);
+			}
+		});
 		add(btnRectangle);
 		
 		JButton btnOval = new JButton("Oval");
+		btnOval.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.setPaintMode(Modes.oval);
+			}
+		});
 		add(btnOval);
 		
 		JButton btnUndo = new JButton("Undo");

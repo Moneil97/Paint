@@ -46,7 +46,13 @@ public class CenterPanel extends JPanel {
 				Layer selectedLayer = layerManager.getSelectedLayer();
 				BufferedImage image = selectedLayer.getImageClone();
 				
-				freeDraw(selectedLayer, image);
+				if (parent.getPaintMode() == Modes.freeDraw)
+					freeDraw(selectedLayer, image);
+				else if (parent.getPaintMode() == Modes.rectangle)
+					;
+				else if (parent.getPaintMode() == Modes.oval)
+					;
+				
 				
 				selectedLayer.updateThumbnail();
 				repaint();
@@ -57,7 +63,14 @@ public class CenterPanel extends JPanel {
 				Layer selectedLayer = layerManager.getSelectedLayer();
 				selectedLayer.setSelectedColor(colorManager.getColor());
 				colorManager.addRecentColor(colorManager.getColor());
-				selectedLayer.getFreeDrawPoints().add(e.getPoint());
+				
+				if (parent.getPaintMode() == Modes.freeDraw)
+					selectedLayer.getFreeDrawPoints().add(e.getPoint());
+				else if (parent.getPaintMode() == Modes.rectangle)
+					;
+				else if (parent.getPaintMode() == Modes.oval)
+					;
+				
 				repaint();
 			}
 			
@@ -67,7 +80,14 @@ public class CenterPanel extends JPanel {
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				layerManager.getSelectedLayer().getFreeDrawPoints().add(e.getPoint());
+				
+				if (parent.getPaintMode() == Modes.freeDraw)
+					layerManager.getSelectedLayer().getFreeDrawPoints().add(e.getPoint());
+				else if (parent.getPaintMode() == Modes.rectangle)
+					;
+				else if (parent.getPaintMode() == Modes.oval)
+					;
+				
 				repaint();
 			}
 		});

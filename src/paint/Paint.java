@@ -13,6 +13,7 @@ public class Paint extends JFrame{
 	private BottomPanel bottomPanel;
 	private TopMenuBar menuBar;
 	private CenterPanel centerPanel;
+	private Modes paintMode = Modes.freeDraw;
 
 	public Paint() {
 		EventQueue.invokeLater(new Runnable() {
@@ -50,6 +51,14 @@ public class Paint extends JFrame{
 	
 	public BottomPanel getBottomPanel(){
 		return bottomPanel;
+	}
+
+	public Modes getPaintMode() {
+		return paintMode;
+	}
+
+	public void setPaintMode(Modes paintMode) {
+		this.paintMode = paintMode;
 	}
 
 	public static void main(String[] args) {
