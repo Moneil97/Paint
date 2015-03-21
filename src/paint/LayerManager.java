@@ -35,13 +35,9 @@ public class LayerManager extends JPanel{
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(9);
 		add(scrollPane);
-		
-//		JPanel header = new JPanel();
-//		scrollPane.setColumnHeaderView(header);
 		
 		layerPanel = new JPanel();
 		layerPanel.setLayout(new BoxLayout(layerPanel, BoxLayout.Y_AXIS));
